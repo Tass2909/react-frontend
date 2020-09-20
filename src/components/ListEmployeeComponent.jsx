@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ClientService from '../services/ClientService';
 
 class ListEmployeeComponent extends Component {
     constructor(props) {
@@ -6,11 +7,22 @@ class ListEmployeeComponent extends Component {
         this.state = {
             clients: []
         }
+        this.addClient = this.addClient.bind(this);
+    }
+    componentDidMount() {
+        ClientService.getClients().then((res) => {
+            this.setState({ clients: res.data });
+        });
+    }
+
+    addClient(){
+        this.props.history.push('/add-client');
     }
     render() {
         return (
             <div>
                 <h2 className="text-center">Clients List</h2>
+                <div className="row"><button className="btn btn-primary" onClick={this.addClient}>Add client</button></div>
                 <div className="row">
                     <table className="table table-striped table-bordered">
                         <thead>
@@ -26,8 +38,8 @@ class ListEmployeeComponent extends Component {
                                 this.state.clients.map(
                                     clients =>
                                         <tr key={clients.id}>
-                                            <td>{clients.firstName}</td>
-                                            <td>{clients.LastName}</td>
+                                            <td>{clients.firstNameClient}</td>
+                                            <td>{clients.lastNameClient}</td>
                                             <td>{clients.emailClient}</td>
                                         </tr>
                                 )
