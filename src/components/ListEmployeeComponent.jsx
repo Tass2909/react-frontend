@@ -8,6 +8,7 @@ class ListEmployeeComponent extends Component {
             clients: []
         }
         this.addClient = this.addClient.bind(this);
+        this.editClient = this.editClient.bind(this);
     }
     componentDidMount() {
         ClientService.getClients().then((res) => {
@@ -15,8 +16,12 @@ class ListEmployeeComponent extends Component {
         });
     }
 
-    addClient(){
+    addClient() {
         this.props.history.push('/add-client');
+    }
+
+    editClient(id) {
+        this.props.history.push(`/update-client/${id}`);
     }
     render() {
         return (
@@ -36,11 +41,14 @@ class ListEmployeeComponent extends Component {
                         <tbody>
                             {
                                 this.state.clients.map(
-                                    clients =>
-                                        <tr key={clients.id}>
-                                            <td>{clients.firstNameClient}</td>
-                                            <td>{clients.lastNameClient}</td>
-                                            <td>{clients.emailClient}</td>
+                                    client =>
+                                        <tr key={client.idClient}>
+                                            <td>{client.firstNameClient}</td>
+                                            <td>{client.lastNameClient}</td>
+                                            <td>{client.emailClient}</td>
+                                            <td>
+                                                <button className="btn btn-info" onClick={ () => this.editClient(client.idClient)}>Update</button>
+                                            </td>
                                         </tr>
                                 )
                             }

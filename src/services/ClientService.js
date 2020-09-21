@@ -8,6 +8,14 @@ class ClientService {
     createClient(client) {
         return axios.post(CLIENT_API_BASE_URL, client);
     }
+
+    getClientById(idClient) {
+        return axios.get(CLIENT_API_BASE_URL + '/' + idClient);
+    }
+
+    updateClient(client, clientId) {
+        return axios.put(CLIENT_API_BASE_URL + '/' + clientId, client);
+    }
 }
 
 export default new ClientService()

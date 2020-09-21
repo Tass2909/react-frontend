@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ClientService from '../services/ClientService';
-class CreateComponent extends Component {
+
+class UpdateClientComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,20 +12,34 @@ class CreateComponent extends Component {
         this.changeFirstNameClientHandler = this.changeFirstNameClientHandler.bind(this);
         this.changeLastNameClientHandler = this.changeLastNameClientHandler.bind(this);
         this.changeEmailClientHandler = this.changeEmailClientHandler.bind(this);
-        this.saveClient = this.saveClient.bind(this);
+        this.updateClient = this.updateClient.bind(this);
         this.state = { alertMessage: false };
+        this.id = this.props.match.params.id;
+
     }
-    saveClient = (e) => {
+
+    componentDidMount() {
+        console.log(this.id);
+        ClientService.getClientById(this.id).then((res) => {
+            let client = res.data;
+            this.setState({
+                firstNameClient: client.firstNameClient,
+                lastNameClient: client.lastNameClient,
+                emailClient: client.emailClient
+            });
+        });
+    }
+    updateClient = (e) => {
         e.preventDefault();
         let client = {
             firstNameClient: this.state.firstNameClient,
             lastNameClient: this.state.lastNameClient,
             emailClient: this.state.emailClient
         };
+        console.log("dans update updateClient" + this.state.id);
         console.log('client =>' + JSON.stringify(client));
 
-        ClientService.createClient(client).then(res => {
-            //this.props.history.push('/clients');
+        ClientService.updateClient(client, this.id).then(res => {
             this.setState({ alertMessage: true });
         })
     }
@@ -44,7 +59,7 @@ class CreateComponent extends Component {
     render() {
         function SuccessMessage(props) {
             return <div className="alert alert-success" role="alert">
-                <p className="center"><strong>Add client success</strong></p>
+                <p className="center"><strong>Update client success</strong></p>
                 <a href="/clients">Return to list of client</a>
             </div>;
         }
@@ -65,7 +80,7 @@ class CreateComponent extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className="text-center">Add client</h3>
+                            <h3 className="text-center">Update client</h3>
                             <Message isLoggedIn={this.state.alertMessage} />
                             <div className="card-body">
                                 <form >
@@ -81,7 +96,7 @@ class CreateComponent extends Component {
                                         <label>Email:</label>
                                         <input placeholder="Email" name="emailClient" className="form-control" value={this.state.emailClient} onChange={this.changeEmailClientHandler} />
                                     </div>
-                                    <button className="btn btn-success" onClick={this.saveClient}>Save</button>
+                                    <button className="btn btn-success" onClick={this.updateClient}>Update</button>
                                     <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{ marginLeft: "10px" }}>Cancel</button>
                                 </form>
                             </div>
@@ -93,4 +108,4 @@ class CreateComponent extends Component {
     }
 }
 
-export default CreateComponent;
+export default UpdateClientComponent;
