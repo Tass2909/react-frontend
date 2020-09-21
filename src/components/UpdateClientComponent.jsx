@@ -15,11 +15,10 @@ class UpdateClientComponent extends Component {
         this.updateClient = this.updateClient.bind(this);
         this.state = { alertMessage: false };
         this.id = this.props.match.params.id;
-
     }
 
     componentDidMount() {
-        console.log(this.id);
+        
         ClientService.getClientById(this.id).then((res) => {
             let client = res.data;
             this.setState({
@@ -36,12 +35,10 @@ class UpdateClientComponent extends Component {
             lastNameClient: this.state.lastNameClient,
             emailClient: this.state.emailClient
         };
-        console.log("dans update updateClient" + this.state.id);
         console.log('client =>' + JSON.stringify(client));
-
         ClientService.updateClient(client, this.id).then(res => {
             this.setState({ alertMessage: true });
-        })
+        });
     }
     cancel() {
         this.props.history.push('/clients');

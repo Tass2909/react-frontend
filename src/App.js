@@ -6,6 +6,7 @@ import ListEmployeeComponent from './components/ListEmployeeComponent';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CreateClientComponent from './components/CreateClientComponent';
 import UpdateClientComponent from './components/UpdateClientComponent';
+import ViewClientComponent from './components/ViewClientComponent';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/clients" component={ListEmployeeComponent}></Route>
             <Route path="/add-client" component={CreateClientComponent}></Route>
             <Route path="/update-client/:id" component={UpdateClientComponent}></Route>
+            <Route path="/view-client/:id" component={ViewClientComponent}></Route>
           </Switch>
         </div>
         <FooterComponent />

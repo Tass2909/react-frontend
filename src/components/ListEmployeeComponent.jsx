@@ -9,6 +9,8 @@ class ListEmployeeComponent extends Component {
         }
         this.addClient = this.addClient.bind(this);
         this.editClient = this.editClient.bind(this);
+        this.deleteClient = this.deleteClient.bind(this);
+        this.viewClient = this.viewClient.bind(this);
     }
     componentDidMount() {
         ClientService.getClients().then((res) => {
@@ -16,6 +18,14 @@ class ListEmployeeComponent extends Component {
         });
     }
 
+    deleteClient(id) {
+        ClientService.deleteClient(id).then(res => {
+            this.setState({ clients: this.state.clients.filter(client => client.idClient !== id) })
+        });
+    }
+    viewClient(id) {
+        this.props.history.push(`/view-client/${id}`);
+    }
     addClient() {
         this.props.history.push('/add-client');
     }
@@ -47,7 +57,9 @@ class ListEmployeeComponent extends Component {
                                             <td>{client.lastNameClient}</td>
                                             <td>{client.emailClient}</td>
                                             <td>
-                                                <button className="btn btn-info" onClick={ () => this.editClient(client.idClient)}>Update</button>
+                                                <button className="btn btn-info" onClick={() => this.editClient(client.idClient)}>Update</button>
+                                                <button style={{ marginLeft: "10px" }} className="btn btn-danger" onClick={() => this.deleteClient(client.idClient)}>Delete</button>
+                                                <button style={{ marginLeft: "10px" }} className="btn btn-primary" onClick={() => this.viewClient(client.idClient)}>View</button>
                                             </td>
                                         </tr>
                                 )
